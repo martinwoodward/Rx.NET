@@ -440,7 +440,7 @@ namespace System.Linq
                 {
                     List<TInner> group;
 
-                    if (!await _outer.MoveNext(cancellationToken))
+                    if (!await _outer.MoveNext(cancellationToken).ConfigureAwait(false))
                     {
                         return false;
                     }
@@ -449,7 +449,7 @@ namespace System.Linq
                     {
                         _innerGroups = new Dictionary<TKey, List<TInner>>();
 
-                        while (await _inner.MoveNext(cancellationToken))
+                        while (await _inner.MoveNext(cancellationToken).ConfigureAwait(false))
                         {
                             var inner = _inner.Current;
                             var innerKey = _innerKeySelector(inner);
@@ -476,7 +476,13 @@ namespace System.Linq
                                 outerKey != null
                                 && _innerGroups.TryGetValue(outerKey, out group)
                                     ? (IEnumerable<TInner>)group
-                                    : EmptyEnumerable<TInner>.Instance));
+                                    :
+#if NO_ARRAY_EMPTY
+                                    EmptyArray<TInner>.Value
+#else
+                                    Array.Empty<TInner>()
+#endif
+                                    ));
 
                     return true;
                 }
@@ -489,10 +495,7 @@ namespace System.Linq
                     _outer.Dispose();
                 }
 
-                private sealed class EmptyEnumerable<TElement>
-                {
-                    public static readonly TElement[] Instance = new TElement[0];
-                }
+      
             }
         }
 

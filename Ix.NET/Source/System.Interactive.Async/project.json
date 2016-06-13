@@ -37,6 +37,7 @@
       "buildOptions": {
         "define": [
           "HAS_APTCA",
+          "NO_ARRAY_EMPTY",
           "DESKTOPCLR",
           "DESKTOPCLR40"
         ]
@@ -51,12 +52,36 @@
         "define": [
           "HAS_AWAIT",
           "HAS_APTCA",
+          "NO_ARRAY_EMPTY",
           "DESKTOPCLR",
           "DESKTOPCLR45"
         ]
       }
     },
+    "net46": {
+      "buildOptions": {
+        "define": [
+          "HAS_AWAIT",
+          "HAS_APTCA",
+          "DESKTOPCLR",
+          "DESKTOPCLR46"
+        ]
+      }
+    },
     "netstandard1.0": {
+      "buildOptions": {
+        "define": [
+          "HAS_AWAIT",
+          "NO_ARRAY_EMPTY",
+          "CRIPPLED_REFLECTION",
+          "PLIB"
+        ]
+      },
+      "dependencies": {
+        "NETStandard.Library": "1.5.0-rc2-24027"
+      }
+    },
+    "netstandard1.3": {
       "buildOptions": {
         "define": [
           "HAS_AWAIT",
